@@ -1,0 +1,58 @@
+// This is your Prisma schema file
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  name      String
+  phone     String
+  city      String
+  password  String  // bcrypt hashed
+  role      String  @default("buyer") // buyer, seller, admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  listings Listing[]
+}
+
+model Category {
+  id   Int     @id @default(autoincrement())
+  name String  @unique
+
+  listings Listing[]
+}
+
+model Listing {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  price       Int     // in MRU (Mauritanian Ouguiya)
+  condition   String  // "new" or "used"
+  city        String
+  sellerId    Int
+  categoryId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  seller   User      @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  category Category  @relation(fields: [categoryId], references: [id])
+  images   Image[]
+}
+
+model Image {
+  id        Int     @id @default(autoincrement())
+  url       String
+  listingId Int
+  order     Int     @default(0)
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
