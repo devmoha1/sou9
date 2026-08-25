@@ -90,6 +90,26 @@ export default function SiteNav() {
     };
   }, []);
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.classList.remove("menu-open");
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen]);
+
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
@@ -114,12 +134,17 @@ export default function SiteNav() {
     setMenuOpen(false);
   };
 
+  const handleBackdropClick = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
         <Link href="/" className="navbar-logo" onClick={handleLinkClick}>
-          Sou9
+          <span className="logo-icon">🛒</span>
+          <span>Sou9</span>
         </Link>
 
         {/* Desktop Search Bar */}
@@ -132,7 +157,7 @@ export default function SiteNav() {
             className="search-input"
           />
           <button type="submit" className="search-button" aria-label="Rechercher">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
             </svg>
@@ -163,23 +188,6 @@ export default function SiteNav() {
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${menuOpen ? "is-open" : ""}`}>
-        {/* Mobile Search */}
-        <form onSubmit={handleSearch} className="search-bar mobile-search">
-          <input
-            type="text"
-            placeholder={t.search}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          <button type="submit" className="search-button" aria-label="Rechercher">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-          </button>
-        </form>
-
         {/* Mobile Navigation Links */}
         <div className="mobile-nav-links">
           <NavLinks user={user} onLinkClick={handleLinkClick} onLogout={handleLogout} t={t} />
@@ -188,9 +196,15 @@ export default function SiteNav() {
           </div>
         </div>
       </div>
-      <div className="nav-tip" role="status">
-        <span>💡</span> {user ? t.memberTip : t.visitorTip}
-      </div>
+      
+      {/* Mobile menu backdrop */}
+      {menuOpen && (
+        <div 
+          className="mobile-menu-backdrop is-open"
+          onClick={handleBackdropClick}
+          aria-hidden="true"
+        />
+      )}
     </nav>
   );
 }

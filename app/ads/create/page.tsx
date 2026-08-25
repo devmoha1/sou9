@@ -191,51 +191,66 @@ export default function CreateListingPage() {
 
       <style jsx>{`
         .create-page {
-          max-width: 600px;
+          max-width: 650px;
           margin: 0 auto;
-          padding: 2rem 1rem;
+          padding: 1.5rem 1rem 3rem;
         }
 
         .create-form {
           background: white;
-          padding: 2rem;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          padding: 2rem 1.75rem;
+          border-radius: 16px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e2e8f0;
         }
 
         .create-form h1 {
-          margin-bottom: 2rem;
-          color: #333;
+          margin-bottom: 1.5rem;
+          color: #1e293b;
+          font-size: clamp(1.35rem, 4vw, 1.75rem);
+          font-weight: 700;
         }
 
         .form-group {
-          margin-bottom: 1.5rem;
+          margin-bottom: 1.25rem;
         }
 
         .form-group label {
           display: block;
-          margin-bottom: 0.5rem;
-          font-weight: 500;
-          color: #333;
+          margin-bottom: 0.4rem;
+          font-weight: 600;
+          font-size: 0.88rem;
+          color: #334155;
         }
 
-        .form-group input,
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="file"],
         .form-group select,
         .form-group textarea {
           width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          font-size: 1rem;
+          padding: 0.75rem 0.85rem;
+          border: 1.5px solid #e2e8f0;
+          border-radius: 10px;
+          font-size: 0.95rem;
           font-family: inherit;
+          background: #f8fafc;
+          transition: all 0.2s;
+          min-height: 44px;
+        }
+
+        .form-group textarea {
+          min-height: 100px;
+          resize: vertical;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
           outline: none;
-          border-color: #007bff;
-          box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+          border-color: #2563eb;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+          background: #fff;
         }
 
         .form-row {
@@ -247,7 +262,7 @@ export default function CreateListingPage() {
         .previews {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 0.5rem;
+          gap: 0.6rem;
           margin-top: 0.75rem;
         }
 
@@ -255,20 +270,38 @@ export default function CreateListingPage() {
           width: 100%;
           aspect-ratio: 1;
           object-fit: cover;
-          border-radius: 4px;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
         }
 
         .error-message {
-          background-color: #f8d7da;
-          color: #721c24;
-          padding: 1rem;
-          border-radius: 4px;
-          margin-bottom: 1rem;
+          background-color: #fee2e2;
+          color: #991b1b;
+          padding: 0.85rem 1rem;
+          border-radius: 8px;
+          margin-bottom: 1.25rem;
+          font-size: 0.9rem;
+          border: 1px solid #fca5a5;
         }
 
-        @media (max-width: 768px) {
+        button[type="submit"] {
+          width: 100%;
+          margin-top: 0.75rem;
+        }
+
+        @media (max-width: 640px) {
+          .create-page {
+            padding: 1rem 0.75rem 2rem;
+          }
+
+          .create-form {
+            padding: 1.25rem 1rem;
+            border-radius: 12px;
+          }
+
           .form-row {
             grid-template-columns: 1fr;
+            gap: 0;
           }
         }
       `}</style>

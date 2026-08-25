@@ -151,72 +151,101 @@ export default function RegisterPage() {
           display: flex;
           justify-content: center;
           align-items: center;
-          min-height: calc(100vh - 200px);
-          padding: 2rem 1rem;
+          min-height: calc(100vh - 180px);
+          padding: 1.5rem 1rem 3rem;
         }
 
         .auth-form {
           background: white;
-          padding: 2rem;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          max-width: 400px;
+          padding: 2rem 1.75rem;
+          border-radius: 16px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+          border: 1px solid #e2e8f0;
+          max-width: 460px;
           width: 100%;
         }
 
         .auth-form h1 {
           text-align: center;
-          margin-bottom: 2rem;
-          color: #333;
+          margin-bottom: 1.5rem;
+          color: #1e293b;
+          font-size: 1.45rem;
+          font-weight: 700;
         }
 
         .form-group {
-          margin-bottom: 1.5rem;
+          margin-bottom: 1.15rem;
         }
 
         .form-group label {
           display: block;
-          margin-bottom: 0.5rem;
-          font-weight: 500;
-          color: #333;
+          margin-bottom: 0.35rem;
+          font-weight: 600;
+          font-size: 0.88rem;
+          color: #334155;
         }
 
         .form-group input,
         .form-group select {
           width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          font-size: 1rem;
+          padding: 0.75rem 0.85rem;
+          border: 1.5px solid #e2e8f0;
+          border-radius: 10px;
+          font-size: 0.95rem;
+          background: #f8fafc;
+          transition: all 0.2s;
+          min-height: 44px;
         }
 
         .form-group input:focus,
         .form-group select:focus {
           outline: none;
-          border-color: #007bff;
-          box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+          border-color: #2563eb;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+          background: #fff;
         }
 
         .error-message {
-          background-color: #f8d7da;
-          color: #721c24;
-          padding: 1rem;
-          border-radius: 4px;
-          margin-bottom: 1rem;
+          background-color: #fee2e2;
+          color: #991b1b;
+          padding: 0.75rem 1rem;
+          border-radius: 8px;
+          margin-bottom: 1.25rem;
+          font-size: 0.88rem;
+          border: 1px solid #fca5a5;
+        }
+
+        button[type="submit"] {
+          width: 100%;
+          margin-top: 0.5rem;
         }
 
         .auth-link {
           text-align: center;
-          margin-top: 1.5rem;
+          margin-top: 1.25rem;
+          font-size: 0.9rem;
+          color: #64748b;
         }
 
         .auth-link a {
-          color: #007bff;
+          color: #2563eb;
           text-decoration: none;
+          font-weight: 600;
         }
 
         .auth-link a:hover {
           text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+          .auth-container {
+            padding: 1rem 0.75rem 2rem;
+          }
+
+          .auth-form {
+            padding: 1.5rem 1.25rem;
+            border-radius: 14px;
+          }
         }
       `}</style>
     </div>
