@@ -68,9 +68,10 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error in listings GET:", error);
     return NextResponse.json(
-      { error: "Erreur serveur" },
-      { status: 500 }
+      { listings: [], total: 0, page: 1, pages: 0, error: error instanceof Error ? error.message : "Erreur serveur" },
+      { status: 200 }
     );
   }
 }

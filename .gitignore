@@ -49,6 +49,7 @@ next-env.d.ts
 # Prisma local database
 prisma/prisma/dev.db
 *.db
+!prisma/template.db
 
 # Local uploads
 public/uploads/
