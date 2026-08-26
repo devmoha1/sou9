@@ -250,15 +250,72 @@ export function useLanguage() {
 }
 
 export function LanguageSwitcher() {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
+  const [open, setOpen] = useState(false);
+
+  const currentLanguage = language === "fr" ? "FR" : "العربية";
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.language-switcher-container')) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [open]);
 
   return (
-    <label className="language-switcher">
-      <span>{t.language}</span>
-      <select value={language} onChange={(event) => setLanguage(event.target.value as Language)}>
-        <option value="fr">Français</option>
-        <option value="ar">العربية</option>
-      </select>
-    </label>
+    <div className="language-switcher-container">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="language-button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        <span className="language-icon">🌐</span>
+        <span className="language-text">{currentLanguage}</span>
+        <span className="language-arrow">▾</span>
+      </button>
+
+      {open && (
+        <div
+          className="language-dropdown"
+          role="menu"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setLanguage("fr");
+              setOpen(false);
+            }}
+            className={`language-option ${language === "fr" ? "language-option-active" : ""}`}
+            role="menuitem"
+          >
+            <span className="language-flag">🇫🇷</span>
+            <span>Français</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setLanguage("ar");
+              setOpen(false);
+            }}
+            className={`language-option ${language === "ar" ? "language-option-active" : ""}`}
+            role="menuitem"
+          >
+            <span className="language-flag">🇸🇦</span>
+            <span>العربية</span>
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

@@ -147,53 +147,70 @@ export default function SiteNav() {
           <span>Sou9</span>
         </Link>
 
-        {/* Desktop Search Bar */}
-        <form onSubmit={handleSearch} className="search-bar desktop-search">
-          <input
-            type="text"
-            placeholder={t.search}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          <button type="submit" className="search-button" aria-label="Rechercher">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-          </button>
-        </form>
-
-        {/* Desktop Navigation */}
-        <div className="navbar-links desktop-nav">
-          <NavLinks user={user} onLinkClick={handleLinkClick} onLogout={handleLogout} t={t} />
-          <LanguageSwitcher />
+        {/* Center Section - Search Bar (Desktop) */}
+        <div className="navbar-center">
+          <form onSubmit={handleSearch} className="search-bar desktop-search">
+            <input
+              type="text"
+              placeholder={t.search}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="search-input"
+            />
+            <button type="submit" className="search-button" aria-label="Rechercher">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </button>
+          </form>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          className="menu-toggle"
-          aria-label={menuOpen ? t.closeMenu : (t.language === "العربية" ? "فتح القائمة" : "Ouvrir le menu")}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span className={`hamburger ${menuOpen ? "is-open" : ""}`}>
-            <span />
-            <span />
-            <span />
-          </span>
-        </button>
+        {/* Right Section - Nav Links + Language + Menu */}
+        <div className="navbar-right">
+          {/* Desktop Navigation */}
+          <div className="navbar-links desktop-nav">
+            <NavLinks user={user} onLinkClick={handleLinkClick} onLogout={handleLogout} t={t} />
+          </div>
+
+          {/* Language Switcher - Always visible */}
+          <div className="language-switcher-container">
+            <LanguageSwitcher />
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            type="button"
+            className="menu-toggle"
+            aria-label={
+              menuOpen
+                ? t.closeMenu
+                : t.language === "العربية"
+                  ? "فتح القائمة"
+                  : "Ouvrir le menu"
+            }
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span className={`hamburger ${menuOpen ? "is-open" : ""}`}>
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${menuOpen ? "is-open" : ""}`}>
         {/* Mobile Navigation Links */}
         <div className="mobile-nav-links">
-          <NavLinks user={user} onLinkClick={handleLinkClick} onLogout={handleLogout} t={t} />
-          <div className="mobile-language">
-            <LanguageSwitcher />
-          </div>
+          <NavLinks
+            user={user}
+            onLinkClick={handleLinkClick}
+            onLogout={handleLogout}
+            t={t}
+          />
         </div>
       </div>
       

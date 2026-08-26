@@ -39,11 +39,16 @@ async function seed() {
   // Créer un utilisateur de test
   const testUser = await prisma.user.upsert({
     where: { email: adminEmail },
-    update: { role: "admin", password: await hashPassword("admin123") },
-    create: {
-      email: adminEmail,
-      name: "Ali Mohamed",
-      phone: "+22223456789",
+    update: {
+  name: "Mohamed Khyarhoum",
+  phone: "+22220528895",
+  role: "admin",
+  password: await hashPassword("admin123"),
+},
+create: {
+  email: adminEmail,
+  name: "Mohamed Khyarhoum",
+  phone: "+22220528895",
       city: "Nouakchott",
       password: await hashPassword("admin123"),
       role: "admin",
