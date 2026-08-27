@@ -70,9 +70,16 @@ export async function POST(request: NextRequest) {
 
       const filename = `listings/${randomUUID()}.${extension}`;
 
-      const blob = await put(filename, file, {
-        access: "public",
-      });
+      const token = process.env.PUBLIC_BLOB_STORE_ID_READ_WRITE_TOKEN;
+
+if (!token) {
+  throw new Error("PUBLIC_BLOB_STORE_ID_READ_WRITE_TOKEN is missing");
+}
+
+const blob = await put(filename, file, {
+  access: "public",
+  token,
+});
 
       urls.push(blob.url);
     }
