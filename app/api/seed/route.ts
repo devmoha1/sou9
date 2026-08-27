@@ -41,8 +41,8 @@ async function seedDatabase() {
     update: { role: "admin", password: await hashPassword("admin123") },
     create: {
       email: adminEmail,
-      name: "Ali Mohamed",
-      phone: "+22223456789",
+      name: "Mohamed Khyarhoum",
+      phone: "+22220528895",
       city: "Nouakchott",
       password: await hashPassword("admin123"),
       role: "admin",
