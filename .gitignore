@@ -53,3 +53,5 @@ prisma/prisma/dev.db
 
 # Local uploads
 public/uploads/
+.vercel
+.env*

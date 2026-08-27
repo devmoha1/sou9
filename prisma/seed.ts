@@ -3,15 +3,8 @@ import { hashPassword } from "@/lib/auth";
 
 async function seed() {
   console.log("🌱 Seeding database...");
+
   const adminEmail = "devmohamed59@gmail.com";
-  const currentAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
-  const legacyAdmin = await prisma.user.findUnique({ where: { email: "ali@example.com" } });
-  if (!currentAdmin && legacyAdmin) {
-    await prisma.user.update({
-      where: { id: legacyAdmin.id },
-      data: { email: adminEmail },
-    });
-  }
 
   // Créer les catégories
   const categoryNames = [
@@ -36,55 +29,66 @@ async function seed() {
 
   console.log(`✅ ${categoryNames.length} catégories vérifiées`);
 
-  // Créer un utilisateur de test
+  // Créer / mettre à jour le compte administrateur
   const testUser = await prisma.user.upsert({
     where: { email: adminEmail },
     update: {
-  name: "Mohamed Khyarhoum",
-  phone: "+22220528895",
-  role: "admin",
-  password: await hashPassword("admin123"),
-},
-create: {
-  email: adminEmail,
-  name: "Mohamed Khyarhoum",
-  phone: "+22220528895",
+      name: "Mohamed Khyarhoum",
+      phone: "+22220528895",
+      role: "admin",
+      password: await hashPassword("admin123"),
+    },
+    create: {
+      email: adminEmail,
+      name: "Mohamed Khyarhoum",
+      phone: "+22220528895",
       city: "Nouakchott",
       password: await hashPassword("admin123"),
       role: "admin",
     },
   });
 
-  console.log(`✅ Utilisateur test créé: ${testUser.email}`);
+  console.log(`✅ Utilisateur administrateur vérifié: ${testUser.email}`);
 
-  // Créer quelques annonces de test
+  // Créer une annonce de test uniquement si nécessaire
   const categoryPhones = await prisma.category.findUnique({
     where: { name: "Téléphones" },
   });
 
   if (categoryPhones) {
-    const listing = await prisma.listing.create({
-      data: {
-        title: "iPhone 15 Pro - Excellent état",
-        description:
-          "iPhone 15 Pro 256GB, très peu utilisé, avec boîte et accessoires",
-        price: 450000,
-        condition: "used",
-        city: "Nouakchott",
+    const existingListing = await prisma.listing.findFirst({
+      where: {
         sellerId: testUser.id,
-        categoryId: categoryPhones.id,
-        images: {
-          create: [
-            {
-              url: "/placeholder-iphone.jpg",
-              order: 0,
-            },
-          ],
-        },
+        title: "iPhone 15 Pro - Excellent état",
       },
     });
 
-    console.log(`✅ Annonce de test créée: ${listing.title}`);
+    if (!existingListing) {
+      const listing = await prisma.listing.create({
+        data: {
+          title: "iPhone 15 Pro - Excellent état",
+          description:
+            "iPhone 15 Pro 256GB, très peu utilisé, avec boîte et accessoires",
+          price: 450000,
+          condition: "used",
+          city: "Nouakchott",
+          sellerId: testUser.id,
+          categoryId: categoryPhones.id,
+          images: {
+            create: [
+              {
+                url: "/placeholder-iphone.jpg",
+                order: 0,
+              },
+            ],
+          },
+        },
+      });
+
+      console.log(`✅ Annonce de test créée: ${listing.title}`);
+    } else {
+      console.log("ℹ️ Annonce de test déjà existante");
+    }
   }
 
   console.log("✨ Seeding terminé!");

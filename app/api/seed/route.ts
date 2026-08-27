@@ -6,6 +6,7 @@ async function seedDatabase() {
   const adminEmail = "devmohamed59@gmail.com";
   const currentAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
   const legacyAdmin = await prisma.user.findUnique({ where: { email: "ali@test.com" } });
+
   if (!currentAdmin && legacyAdmin) {
     await prisma.user.update({
       where: { id: legacyAdmin.id },
@@ -37,16 +38,11 @@ async function seedDatabase() {
   // Créer un utilisateur de test
   const testUser = await prisma.user.upsert({
     where: { email: adminEmail },
-    update: {
-  name: "Mohamed Khyarhoum",
-  phone: "+22220528895",
-  role: "admin",
-  password: await hashPassword("admin123"),
-},
-create: {
-  email: adminEmail,
-  name: "Mohamed Khyarhoum",
-  phone: "+22220528895",
+    update: { role: "admin", password: await hashPassword("admin123") },
+    create: {
+      email: adminEmail,
+      name: "Ali Mohamed",
+      phone: "+22223456789",
       city: "Nouakchott",
       password: await hashPassword("admin123"),
       role: "admin",
