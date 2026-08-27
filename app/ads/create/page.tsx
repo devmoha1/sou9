@@ -58,9 +58,27 @@ export default function CreateListingPage() {
           method: "POST",
           body: uploadData,
         });
-        const uploadResult = await uploadResponse.json();
-        if (!uploadResponse.ok) throw new Error(uploadResult.error || "Erreur d'upload");
-        imageUrls = uploadResult.urls;
+        const uploadText = await uploadResponse.text();
+
+let uploadResult: { urls?: string[]; error?: string } = {};
+
+try {
+  uploadResult = uploadText ? JSON.parse(uploadText) : {};
+} catch {
+  throw new Error(
+    `Erreur d'upload (${uploadResponse.status}) : réponse invalide du serveur`
+  );
+}
+
+if (!uploadResponse.ok) {
+  throw new Error(uploadResult.error || "Erreur d'upload");
+}
+
+if (!Array.isArray(uploadResult.urls)) {
+  throw new Error("Le serveur n'a pas retourné les URLs des images");
+}
+
+imageUrls = uploadResult.urls;
       }
 
       const res = await fetch("/api/listings", {
