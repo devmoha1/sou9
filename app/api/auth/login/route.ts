@@ -14,7 +14,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log(`[Login] Attempting login for email: ${email}`);
     const user = await prisma.user.findUnique({ where: { email } });
+    console.log(`[Login] User found: ${!!user}, id: ${user?.id}`);
+    
     if (!user) {
       return NextResponse.json(
         { error: "Email ou mot de passe incorrect" },
@@ -23,6 +26,8 @@ export async function POST(request: NextRequest) {
     }
 
     const validPassword = await verifyPassword(password, user.password);
+    console.log(`[Login] Password valid: ${validPassword}`);
+    
     if (!validPassword) {
       return NextResponse.json(
         { error: "Email ou mot de passe incorrect" },

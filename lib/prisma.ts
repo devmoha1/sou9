@@ -11,13 +11,17 @@ function setupDatabase() {
 
   const currentUrl = process.env.DATABASE_URL || "";
 
+  console.log(`[Prisma] Setup - isVercel: ${isVercel}, currentUrl: ${currentUrl}`);
+
   // On Vercel serverless functions, SQLite must live in the writable tmp directory
   if (isVercel && (!currentUrl || currentUrl.startsWith("file:"))) {
     const tmpDbPath = path.join(os.tmpdir(), "dev.db");
     process.env.DATABASE_URL = `file:${tmpDbPath}`;
+    console.log(`[Prisma] Using tmp DB path: ${tmpDbPath}`);
 
     if (!fs.existsSync(tmpDbPath)) {
       const templatePath = path.join(process.cwd(), "prisma", "template.db");
+      console.log(`[Prisma] Template DB exists: ${fs.existsSync(templatePath)}`);
       if (fs.existsSync(templatePath)) {
         try {
           const dir = path.dirname(tmpDbPath);
