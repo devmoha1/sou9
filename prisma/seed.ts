@@ -33,8 +33,6 @@ async function seed() {
   const testUser = await prisma.user.upsert({
     where: { email: adminEmail },
     update: {
-      name: "Mohamed Khyarhoum",
-      phone: "+22220528895",
       role: "admin",
       password: await hashPassword("admin123"),
     },

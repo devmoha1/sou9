@@ -7,6 +7,7 @@ export function setAuthCookie(response: NextResponse, userId: number) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
+    path: "/",
     maxAge: 60 * 60 * 24 * 7, // 7 jours
   });
 }
@@ -17,5 +18,13 @@ export function getAuthCookie(request: NextRequest): number | null {
 }
 
 export function clearAuthCookie(response: NextResponse) {
-  response.cookies.delete("userId");
+  response.cookies.set({
+    name: "userId",
+    value: "",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  });
 }

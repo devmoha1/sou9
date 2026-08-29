@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
         include: {
           images: { take: 1 },
           category: true,
-          seller: { select: { name: true, city: true } },
+          seller: { select: { name: true, phone: true, city: true } },
         },
         orderBy: { createdAt: "desc" },
         skip,
@@ -82,6 +82,19 @@ export async function POST(request: NextRequest) {
     if (!userId) {
       return NextResponse.json(
         { error: "Non authentifié" },
+        { status: 401 }
+      );
+    }
+
+    // Vérifier que l'utilisateur existe dans la base de données
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, name: true, phone: true }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Utilisateur non trouvé" },
         { status: 401 }
       );
     }
